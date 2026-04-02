@@ -1,9 +1,9 @@
 import { ImageGalleryItem } from "./ImageGalleryItem";
 
-export const ImageGallery = (image) => {
+export const ImageGallery = () => {
   return (
-    <ul className="gallery">
-      <li><ImageGalleryItem image={image}/></li>
-    </ul>
+    <div className="gallery">
+        <ImageGalleryItem/>
+    </div>
   );
 };

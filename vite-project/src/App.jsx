@@ -1,35 +1,39 @@
 import "./App.css";
 import { fetchImagesByName } from "./Components/Loader";
 import { SearchBar } from "./Components/Searchbar";
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { ImageGallery } from "./Components/ImageGallery";
+
+export const ImagesContext = createContext(null);
 
 function App() {
   const [value, setValue] = useState("");
-  const [image, setImage] = useState([]);
+  const [images, setImages] = useState([]);
 
   useEffect(() => {
-      fetchImagesByName(value)
-        .then((images) => {
-          console.log(images)
-          setImage(images.hits);
+    if (!value) return;
 
-        })
-        .catch((error) => {
-          console.log("Error:", error);
-        });
-        console.log(image)
+    fetchImagesByName(value)
+      .then((data) => {
+        setImages(data.hits);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, [value]);
 
-  const ChangeName = (newName) => {
+  const changeName = (newName) => {
     setValue(newName);
   };
 
   return (
     <>
-      <SearchBar onSubmit={ChangeName} />
-      <ImageGallery image={image} />
+      <SearchBar onSubmit={changeName} />
+      <ImagesContext.Provider value={images}>
+        <ImageGallery />
+      </ImagesContext.Provider>
     </>
   );
 }
+
 export default App;
