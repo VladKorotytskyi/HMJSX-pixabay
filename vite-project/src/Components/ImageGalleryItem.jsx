@@ -1,16 +1,23 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { ImagesContext } from "../App";
 
 export const ImageGalleryItem = () => {
-  const images = useContext(ImagesContext);
+  const { images, setModal, setSelectedImage } = useContext(ImagesContext);
 
-  if (!images) return null;
+  const handleClickModal = (image) => {
+    setSelectedImage(image);
+    setModal(true);
+  };
 
   return (
     <>
-      {images.map((img) => (
-        <li className="gallery-item" key={img.id}>
-          <img src={img.webformatURL} alt={img.tags} />
+      {images.map((image) => (
+        <li className="gallery-item" key={image.id}>
+          <img 
+            src={image.webformatURL} 
+            alt={image.tags} 
+            onClick={() => handleClickModal(image)} 
+          />
         </li>
       ))}
     </>
